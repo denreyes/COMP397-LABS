@@ -27,22 +27,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask _groundMask;
     [SerializeField] bool _isGrounded;
 
+    [Header("Respawn Locations")]
+    [SerializeField] Transform _respawn;
+
     void Awake()
     {
         _controller = GetComponent<CharacterController>();
         _inputs = new COMP397_LAB();
-        _inputs.Enable();
-
-        //Debug for player location
-        //_inputs.Player.Move.performed += context => SendMessage(context);
-
-        //Move when pressing key
+        
         _inputs.Player.Move.performed += context => _move = context.ReadValue<Vector2>();
-        //Stop when not pressing key, otherwise player will keep moving to the last direciton
         _inputs.Player.Move.canceled += context => _move = Vector2.zero;
-
-        //Jump when pressing key
         _inputs.Player.Jump.performed += context => Jump();
+    }
+
+    private void OnEnable()
+    {
+        _inputs.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _inputs.Disable();
     }
 
     void FixedUpdate()
@@ -70,6 +75,17 @@ public class PlayerController : MonoBehaviour
         if (_isGrounded)
         {
             _velocity.y = Mathf.Sqrt(_jumpHeight * -2.0f * _gravity);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"OnTriggerEnter {other.gameObject.tag}");
+        if (other.gameObject.CompareTag("death"))
+        {
+            _controller.enabled = false;
+            transform.position = _respawn.position;
+            _controller.enabled = true;
         }
     }
 
