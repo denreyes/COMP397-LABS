@@ -7,7 +7,7 @@ using UnityEngine.Scripting.APIUpdating;
 
 [RequireComponent(typeof(CharacterController))]
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Subject
 {
     COMP397_LAB _inputs;
     Vector2 _move;
@@ -58,6 +58,10 @@ public class PlayerController : MonoBehaviour
             _velocity.y = -2.0f;
         }
         Vector3 movement = new Vector3(_move.x, 0.0f, _move.y) * _speed * Time.fixedDeltaTime;
+        if(_controller.enabled)
+        {
+            return;
+        }
         _controller.Move(movement);
         _velocity.y += _gravity * Time.fixedDeltaTime;
         _controller.Move(_velocity * Time.fixedDeltaTime);
@@ -75,23 +79,19 @@ public class PlayerController : MonoBehaviour
         if (_isGrounded)
         {
             _velocity.y = Mathf.Sqrt(_jumpHeight * -2.0f * _gravity);
+            NotifyObservers(PlayerEnums.Jump);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"OnTriggerEnter {other.gameObject.tag}");
         if (other.gameObject.CompareTag("death"))
         {
             _controller.enabled = false;
             transform.position = _respawn.position;
             _controller.enabled = true;
+            NotifyObservers(PlayerEnums.Died);
         }
-    }
-
-    private void SendMessage(InputAction.CallbackContext context)
-    {
-        Debug.Log($"Move Performed x = {context.ReadValue<Vector2>().x}, y = {context.ReadValue<Vector2>().y}");
     }
 
 }
