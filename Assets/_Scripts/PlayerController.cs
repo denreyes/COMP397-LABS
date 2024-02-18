@@ -34,7 +34,7 @@ public class PlayerController : Subject
     {
         _controller = GetComponent<CharacterController>();
         _inputs = new COMP397_LAB();
-        
+        _inputs.Enable();
         _inputs.Player.Move.performed += context => _move = context.ReadValue<Vector2>();
         _inputs.Player.Move.canceled += context => _move = Vector2.zero;
         _inputs.Player.Jump.performed += context => Jump();
