@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +35,6 @@ public class PlayerController : Subject
     {
         _controller = GetComponent<CharacterController>();
         _inputs = new COMP397_LAB();
-        _inputs.Enable();
         _inputs.Player.Move.performed += context => _move = context.ReadValue<Vector2>();
         _inputs.Player.Move.canceled += context => _move = Vector2.zero;
         _inputs.Player.Jump.performed += context => Jump();
@@ -42,11 +42,13 @@ public class PlayerController : Subject
 
     private void OnEnable()
     {
+        Debug.Log("Enable");
         _inputs.Enable();
     }
 
     private void OnDisable()
     {
+        Debug.Log("Disable");
         _inputs.Disable();
     }
 
@@ -58,7 +60,7 @@ public class PlayerController : Subject
             _velocity.y = -2.0f;
         }
         Vector3 movement = new Vector3(_move.x, 0.0f, _move.y) * _speed * Time.fixedDeltaTime;
-        if(_controller.enabled)
+        if(!_controller.enabled)
         {
             return;
         }

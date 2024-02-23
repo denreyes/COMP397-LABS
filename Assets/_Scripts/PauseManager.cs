@@ -12,15 +12,16 @@ public class PauseManager : MonoBehaviour
 
     private COMP397_LAB _inputs;
 
-    private void Awake()
+    void Awake()
     {
         _playerController = _player.GetComponent<CharacterController>();
         _inputs = new COMP397_LAB();
-        _inputs.Player.Pause.performed += context => PauseGame();
+        _inputs.Player.Pause.performed += context =>
+                PauseGame();
         _inputs.Enable();
     }
 
-    private void OnDisable()
+     void OnDisable()
     {
         _inputs.Disable();
     }
