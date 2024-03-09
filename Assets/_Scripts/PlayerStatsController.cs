@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerStatsController : MonoBehaviour, IObserver
 {
@@ -44,7 +43,13 @@ public class PlayerStatsController : MonoBehaviour, IObserver
         if (_playerHealth <= 0)
         {
             Debug.Log($"Player truly died");
-            SceneManager.LoadScene("GameOver");
+            SceneController.Instance.ChangeSceneByName("GameOver");
         }
     }
+
+    public void SaveGameIntoFile()
+    {
+        SaveGameManager.Instance().SaveGame(_playerSubject.transform);
+    }
+    
 }
