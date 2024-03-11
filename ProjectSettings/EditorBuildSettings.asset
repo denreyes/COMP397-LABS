@@ -7,15 +7,15 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/Menu.unity
-    guid: 7973d53746d8d0648935249f0217745b
+    guid: ce83edd5f1e0ba7409a79cb99a455170
   - enabled: 1
     path: Assets/Scenes/CameraPrototype.unity
-    guid: 97952e66f5f6e95448f9950ca7280167
+    guid: 23ed2f0370644b34ea1b7049faba52de
   - enabled: 1
     path: Assets/Scenes/GameOver.unity
-    guid: 339f7edcad2ad7c4cb6c4f3dabea0a4f
+    guid: 792ebe2250ce5ee4fa7148a8042eb47f
   - enabled: 1
     path: Assets/Scenes/EnemyPrototype.unity
-    guid: 3c03720398cd99145a4ad8808f16da36
+    guid: 6128855751ed11c4ba2523f65580c290
   m_configObjects:
-    com.unity.input.settings: {fileID: 11400000, guid: 66ae41374f4a9fc4797a042bdf2f8e8a, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: 763e8c9dde6e300439656b0b41fdd3f4, type: 2}

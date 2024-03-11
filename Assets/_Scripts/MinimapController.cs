@@ -5,14 +5,15 @@ using UnityEngine;
 public class MinimapController : MonoBehaviour
 {
     [SerializeField] private Transform _player;
-
+    
     void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        transform.position = new Vector3(_player.position.x, transform.position.y, _player.position.z);
+        transform.position = 
+            new Vector3(_player.position.x, transform.position.y, _player.position.z);
     }
 }

@@ -7,31 +7,31 @@ using UnityEngine;
 [System.Serializable]
 class PlayerData
 {
-    public string position;
+  public string position;
 }
 
 [System.Serializable]
 public class SaveGameManager
 {
-    private static SaveGameManager m_instance = null;
+  private static SaveGameManager m_instance = null;
+  private SaveGameManager(){}
+  public static SaveGameManager Instance()
+  {
+    return m_instance ??= new SaveGameManager();
+  }
 
-    private SaveGameManager() { }
-    public static SaveGameManager Instance()
+  public void SaveGame(Transform playerTransform)
+  {
+    var binaryFormatter = new BinaryFormatter();
+    var file = File.Create(Application.persistentDataPath + "/MySaveData.txt");
+
+    var data = new PlayerData
     {
-        return m_instance ?? new SaveGameManager();
-    }
+      position = JsonUtility.ToJson(playerTransform.position)
+    };
+    binaryFormatter.Serialize(file, data);
+    file.Close();
+    Debug.Log("Game Data Save");
+  }
 
-    public void SaveGame(Transform playerTransform)
-    {
-        var binaryFormatter = new BinaryFormatter();
-        var file = File.Create(Application.persistentDataPath + "/MySaveData.dat");
-
-        var data = new PlayerData
-        {
-            position = JsonUtility.ToJson(playerTransform.position)
-        };
-        binaryFormatter.Serialize(file, data);
-        file.Close();
-        Debug.Log("Game Data Save");
-    }
 }

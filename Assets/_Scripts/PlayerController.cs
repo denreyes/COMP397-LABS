@@ -1,32 +1,29 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Scripting.APIUpdating;
 
-
 [RequireComponent(typeof(CharacterController))]
-
 public class PlayerController : Subject
 {
 #region Private Fields
-    COMP397_LAB _inputs;
+    COMP397W24LABS _inputs;
     Vector2 _move;
     Camera _camera;
     Vector3 _camForward, _camRight;
 #endregion
-
 #region Serialized Fields
     [Header("Character Controller")]
     [SerializeField] CharacterController _controller;
-
+    
     [Header("Movements")]
     [SerializeField] float _speed;
     [SerializeField] float _gravity = -30.0f;
     [SerializeField] float _jumpHeight = 3.0f;
     [SerializeField] Vector3 _velocity;
-
+    
     [Header("Ground Detection")]
     [SerializeField] Transform _groundCheck;
     [SerializeField] float _groundRadius = 0.5f;
@@ -36,28 +33,20 @@ public class PlayerController : Subject
     [Header("Respawn Locations")]
     [SerializeField] Transform _respawn;
 #endregion
-
+    
     void Awake()
     {
-        _camera = Camera.main;
-        _controller = GetComponent<CharacterController>();
-        _inputs = new COMP397_LAB();
-        _inputs.Player.Move.performed += context => _move = context.ReadValue<Vector2>();
-        _inputs.Player.Move.canceled += context => _move = Vector2.zero;
-        _inputs.Player.Jump.performed += context => Jump();
+      _camera = Camera.main;
+      _controller = GetComponent<CharacterController>();
+      _inputs = new COMP397W24LABS();
+      _inputs.Player.Move.performed += context => _move = context.ReadValue<Vector2>();
+      _inputs.Player.Move.canceled += context => _move = Vector2.zero;
+      _inputs.Player.Jump.performed += context => Jump();
     }
 
-    private void OnEnable()
-    {
-        Debug.Log("Enable");
-        _inputs.Enable();
-    }
+    void OnEnable() => _inputs.Enable();
 
-    private void OnDisable()
-    {
-        Debug.Log("Disable");
-        _inputs.Disable();
-    }
+    void OnDisable() => _inputs.Disable();
 
     void FixedUpdate()
     {
@@ -73,22 +62,17 @@ public class PlayerController : Subject
         _camForward.Normalize();
         _camRight.Normalize();
         Vector3 movement = (_camRight * _move.x + _camForward * _move.y) * _speed * Time.fixedDeltaTime;
-        if(!_controller.enabled)
-        {
-            return;
-        }
+        if (!_controller.enabled) { return; }
         _controller.Move(movement);
         _velocity.y += _gravity * Time.fixedDeltaTime;
         _controller.Move(_velocity * Time.fixedDeltaTime);
     }
-
 
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_groundCheck.position, _groundRadius);
     }
-
     void Jump()
     {
         if (_isGrounded)
@@ -98,9 +82,9 @@ public class PlayerController : Subject
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("death"))
+        if (other.CompareTag("death"))
         {
             _controller.enabled = false;
             transform.position = _respawn.position;
@@ -108,5 +92,4 @@ public class PlayerController : Subject
             NotifyObservers(PlayerEnums.Died);
         }
     }
-
 }

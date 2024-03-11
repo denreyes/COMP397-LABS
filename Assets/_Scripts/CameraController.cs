@@ -6,17 +6,18 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    COMP397_LAB _inputs;
-
+    COMP397W24LABS _inputs; // Section 001
+    // PlayerControl _inputs; // Section 401. 
     [SerializeField] private int _index = 0;
     [SerializeField] private CinemachineVirtualCamera _currentCamera;
-    [SerializeField] private List<CinemachineVirtualCamera> _virtualCameras =
-        new List<CinemachineVirtualCamera>();
+    [SerializeField] private List<CinemachineVirtualCamera> _virtualCameras = 
+            new List<CinemachineVirtualCamera>();
 
     void Awake()
     {
         InitCameraPriorities();
-        _inputs = new COMP397_LAB();
+        _inputs = new COMP397W24LABS(); // Section 001;
+        // _inputs = new PlayerControl(); // Section 401;
         _inputs.Player.Camera.performed += context => MoveCamera(context.ReadValue<float>());
     }
 
@@ -30,19 +31,12 @@ public class CameraController : MonoBehaviour
         _currentCamera.Priority = 10;
     }
 
-    void OnEnable()
-    {
-        _inputs.Enable();
-    }
-
-    void OnDisable()
-    {
-        _inputs.Disable();
-    }
-
+    void OnEnable() => _inputs.Enable();
+    void OnDisable() => _inputs.Disable();
+    
     void MoveCamera(float value)
     {
-        Debug.Log($"Camera changed value {value}");
+        Debug.Log($"Camera change value {value}");
         _index += (int)value;
         if (_index < 0) _index = _virtualCameras.Count - 1;
         if (_index > _virtualCameras.Count - 1) _index = 0;

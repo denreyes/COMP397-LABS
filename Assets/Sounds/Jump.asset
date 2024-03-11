@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21c9154ea4470a3469e7ee083a2817d3, type: 3}
+  m_Script: {fileID: 11500000, guid: b6e90a2f2ff987c4ea16b99dad6d7aa4, type: 3}
   m_Name: Jump
   m_EditorClassIdentifier: 
   AudioName: Jump
-  AudioClip: {fileID: 8300000, guid: 6477a19ad2bbcc947acb040a9602bd57, type: 3}
+  AudioFile: {fileID: 8300000, guid: ca6d84d1dfb46b8479e7888e2ecf27d1, type: 3}
   IsLooping: 0

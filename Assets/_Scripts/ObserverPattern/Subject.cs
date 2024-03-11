@@ -4,24 +4,22 @@ using UnityEngine;
 
 public abstract class Subject : MonoBehaviour
 {
-    private List<IObserver> _observers =
-        new List<IObserver>();
+  private List<IObserver> _observes = 
+    new List<IObserver>();
 
-    public void AddObserver(IObserver observer)
+  public void AddObserver(IObserver observer)
+  {
+    _observes.Add(observer);
+  }
+  public void RemoveObserver(IObserver observer)
+  {
+    _observes.Remove(observer);
+  }
+  public void NotifyObservers(PlayerEnums playerEnums)
+  {
+    _observes.ForEach((_observer) => 
     {
-        _observers.Add(observer);
-    }
-    
-    public void RemoveObserver(IObserver observer)
-    {
-        _observers.Remove(observer);
-    }
-
-    public void NotifyObservers(PlayerEnums playerEnums)
-    {
-        _observers.ForEach((_observers) =>
-        {
-            _observers.OnNotify(playerEnums);
-        });
-    }
+      _observer.OnNotify(playerEnums);
+    });
+  }
 }
